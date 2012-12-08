@@ -52,27 +52,24 @@ getLocations = function(url) {
 	$.each(uniqueArtists, function(i, val) {
 		url = "http://developer.echonest.com/api/v4/artist/profile?api_key=" + api_key + "&format=json&name=" + uniqueArtists[i].name + "&bucket=artist_location";	
 		$.getJSON(url, function(data) {
-			extractLocation(i, data.response.artist.artist_location.location);
+			input = data.response.artist.artist_location.location;
+		    var regex = new RegExp("[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+");
+		    var parsed_input = input.match(regex);
+		    if (parsed_input) {
+				parsed_input = parsed_input[0].split(",");
+				callback(parsed_input[0], parsed_input[1]);
+		    } else {
+			var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
+			    + encodeURIComponent(parsed_input) + "&sensor=false";
+			$.getJSON(url, function(data) {
+			    var location = data['results']['geometry']['location'];
+			    uniqueArtists[i].latitude = location['lat'];
+			    uniqueArtists[i].longitude = location['lon'];
+			    if (i == uniqueArtists.length-1)
+			    	finish();
+			});
 		});
 	});
-};
-
-function extractLocation(index, input) {
-    var regex = new RegExp("[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+");
-    var parsed_input = input.match(regex);
-    if (parsed_input) {
-	parsed_input = parsed_input[0].split(",");
-	callback(parsed_input[0], parsed_input[1]);
-    } else {
-	var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
-	    + encodeURIComponent(parsed_input) + "&sensor=false";
-	$.getJSON(url, function(data) {
-	    var location = data['results']['geometry']['location'];
-	    uniqueArtists[index].latitude = location['lat'];
-	    uniqueArtists[index].longitude = location['lon'];
-		finish();
-	});
-    }
 };
 
 finish = function() {
@@ -80,3 +77,21 @@ finish = function() {
 	console.log("Name: " + uniqueArtists[k].name+ ", Lat: "+uniqueArtists[k].latitude+", Long: "+uniqueArtists[k].longitude);
 	console.log(uniqueArtists.length);
 };
+
+// function extractLocation(index, input) {
+//     var regex = new RegExp("[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+");
+//     var parsed_input = input.match(regex);
+//     if (parsed_input) {
+// 	parsed_input = parsed_input[0].split(",");
+// 	callback(parsed_input[0], parsed_input[1]);
+//     } else {
+// 	var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
+// 	    + encodeURIComponent(parsed_input) + "&sensor=false";
+// 	$.getJSON(url, function(data) {
+// 	    var location = data['results']['geometry']['location'];
+// 	    uniqueArtists[index].latitude = location['lat'];
+// 	    uniqueArtists[index].longitude = location['lon'];
+		
+// 	});
+//     }
+// };
