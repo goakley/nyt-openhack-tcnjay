@@ -65,6 +65,7 @@ getLocations = function(url) {
 				    var location = data['results']['geometry']['location'];
 				    uniqueArtists[i].latitude = location['lat'];
 				    uniqueArtists[i].longitude = location['lon'];
+				    console.log(i);
 				    if (i == uniqueArtists.length-1)
 				    	finish();
 				});
