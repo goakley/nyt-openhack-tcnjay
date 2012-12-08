@@ -10,5 +10,9 @@
     "SupportedLanguages": [
         "en"
     ],
-    "RequiredPermissions": []
+    "RequiredPermissions": [
+        "https://maps.googleapis.com/",
+	"http://maps.googleapis.com/",
+	"http://developer.echonest.com"
+    ]
 }
