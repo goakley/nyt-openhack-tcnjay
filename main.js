@@ -13,22 +13,32 @@ $("#form_location").submit(function(event) {
     var input = $("#form_location_text").val();
     $("#form_location_text").val("");
     event.preventDefault();
-    extractLocation(input, function(lat, lon) {
-	obtain_artists(lat, lon, function(){});
+    MusicMap.extractLocation(input, function(lat, lon) {
+	alert(lat + "," + lon);
+	//obtain_artists(lat, lon, function(){});
     });
 });
 
 
-function extractLocation(input, callback) {
+
+
+function MusicMap(lat, lon) {
+    this.latitude = lat;
+    this.longitude = lon;
+}
+
+MusicMap.extractLocation = function(input, callback) {
     var regex = new RegExp("[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+");
-    var parsed_input = input.match(regex)[0];
+    var parsed_input = input.match(regex);
     if (parsed_input) {
-	parsed_input = parsed_input.split(",");
+	parsed_input = parsed_input[0].split(",");
 	callback(parsed_input[0], parsed_input[1]);
     } else {
+	alert("Extracting Location");
 	var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
 	    + encodeURIComponent(parsed_input) + "&sensor=false";
 	$.getJSON(url, function(data) {
+	    alert("GOTTEN");
 	    var location = data['results']['geometry']['location'];
 	    callback(location['lat'], location['lon']);
 	});
