@@ -59,15 +59,16 @@ getLocations = function(url) {
 				parsed_input = parsed_input[0].split(",");
 				callback(parsed_input[0], parsed_input[1]);
 		    } else {
-			var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
+				var url = "https://maps.googleapis.com/maps/api/geocode/json?address="
 			    + encodeURIComponent(parsed_input) + "&sensor=false";
-			$.getJSON(url, function(data) {
-			    var location = data['results']['geometry']['location'];
-			    uniqueArtists[i].latitude = location['lat'];
-			    uniqueArtists[i].longitude = location['lon'];
-			    if (i == uniqueArtists.length-1)
-			    	finish();
-			});
+				$.getJSON(url, function(data) {
+				    var location = data['results']['geometry']['location'];
+				    uniqueArtists[i].latitude = location['lat'];
+				    uniqueArtists[i].longitude = location['lon'];
+				    if (i == uniqueArtists.length-1)
+				    	finish();
+				});
+			}
 		});
 	});
 };
