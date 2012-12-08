@@ -1,0 +1,14 @@
+{
+    "BundleType": "Application",
+    "BundleIdentifier": "nytimes",
+    "AppIcon": {
+        "36x18": "tutorial.png"
+    },
+    "AppName": {
+        "en": "MusicMaps"
+    },
+    "SupportedLanguages": [
+        "en"
+    ],
+    "RequiredPermissions": []
+}
