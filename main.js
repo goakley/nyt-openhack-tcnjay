@@ -8,6 +8,10 @@ if (navigator.geolocation) {
 	}
     });
 }
+var map = new google.maps.Map(document.getElementById('map'),
+			      {center:(new google.maps.LatLng(0,0)),
+			       zoom:3,
+			       mapTypeId:google.maps.MapTypeId.HYBRID});
 
 $("#form_location").submit(function(event) {
     var input = $("#form_location_text").val();
