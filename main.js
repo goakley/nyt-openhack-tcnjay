@@ -10,13 +10,18 @@ if (navigator.geolocation) {
 }
 
 $("#form_location").submit(function(event) {
-	var input = $("#form_location_text").val();
-	$("#form_location_text").val("");
-	event.preventDefault();
-	MusicMap.extractLocation(input, function(lat, lon) {
-	alert(lat + "," + lon);
-	//obtainArtists(lat, lon, function(artists){console.log(artists);});
+    var input = $("#form_location_text").val();
+    $("#form_location_text").val("");
+    event.preventDefault();
+    MusicMap.extractLocation(input, function(lat, lon) {
+	(new EchoServer(lat, lon)).obtainArtists(function(artists) {
+	//obtainArtists(lat, lon, function(artists){
+	    for (var i = 0; i < artists.length; i++) {
+		artists[i]['familiarity'] = 32;
+	    }
+	    console.log(artists);
 	});
+    });
 });
 
 
