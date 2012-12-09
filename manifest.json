@@ -11,8 +11,10 @@
         "en"
     ],
     "RequiredPermissions": [
-        "https://maps.googleapis.com/",
+    "https://maps.googleapis.com/",
 	"http://maps.googleapis.com/",
+    "https://maps.google.com/",
+	"http://maps.google.com/",
 	"http://developer.echonest.com"
     ]
 }
