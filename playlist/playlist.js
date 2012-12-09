@@ -20,7 +20,37 @@ function create_songs(artists)
 	var songs_shuffled = fisher_yates(songs);
 	console.log(songs_shuffled);
 	return songs_shuffled;
-    };
+    },
+    second_success = function (resp, status, xhr)
+                  {
+                                      songs.push(resp.response.songs[0]);
+
+                                      if (artists.length - 1 === index && num_songs - 1 === idx)
+                                      {
+                      return create_playlist(songs);
+                                      }
+                  },
+    first_success = function (resp, status, xhr)
+               {
+                   var num_songs = resp.response.songs.length;
+                   for (var idx = 0; idx < num_songs; idx++)
+                          {
+                            var itm = resp.response.songs[idx];
+              $.ajax({
+                  data: $.extend({}, default_data, {
+                                      'artist': item.artist,
+                                      'title': itm.title,
+                                      'start': 0,
+                                      'results': 1
+                                  }
+                        ),
+                  type: 'get',
+                  url: song_url,
+
+                  success: second_success
+                              });
+                          }
+               };
 
     var songs = [],
     default_data = {
@@ -32,51 +62,22 @@ function create_songs(artists)
     song_url = echonest_url + 'song/search',
     artist_songs_url = echonest_url + 'artist/songs';
 
-    $.each(artists,
-           function (index, item)
-           {
-               $.ajax({
-                   data: $.extend({}, default_data, {
-                       'start': 0,
-                       'id': item.id,
-                       'results': 3
-                   }
-				 ),
-                   type: 'get',
-                   url: artist_songs_url,
+       for(var index = 0; index < artists.length; index++)
+       {
+        var item = artists[index];
+           $.ajax({
+               data: $.extend({}, default_data, {
+                   'start': 0,
+                   'id': item.id,
+                   'results': 3
+               }
+			 ),
+               type: 'get',
+               url: artist_songs_url,
 
-                   success: function (resp, status, xhr)
-                   {
-                       var num_songs = resp.response.songs.length;
-                       $.each(resp.response.songs,
-                              function (idx, itm)
-                              {
-				  $.ajax({
-				      data: $.extend({}, default_data, {
-                                          'artist': item.artist,
-                                          'title': itm.title,
-                                          'start': 0,
-                                          'results': 1
-                                      }
-						    ),
-				      type: 'get',
-				      url: song_url,
-
-				      success: function (resp, status, xhr)
-				      {
-                                          songs.push(resp.response.songs[0]);
-					  console.log(index);
-
-                                          if (artists.length - 1 === index && num_songs - 1 === idx)
-                                          {
-					      return create_playlist(songs);
-                                          }
-				      }
-                                  });
-                              });
-                   }
-               });
-           });
+               success: first_success
+            });
+       }
 }
 
 
