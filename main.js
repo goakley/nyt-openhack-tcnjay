@@ -31,42 +31,32 @@ $("#form_location").submit(function(event) {
 	map.setZoom(8);
 	EchoServer.obtainArtists(lat, lon, function(artists) {
 	    $("#notif").html("&nbsp");
-	    console.log(artists);
-	    function attachto(marker) {
-		google.maps.event.addListener(marker, 'click', function(event){
-		    console.log("CLICKED");
-		    $("#songs").html("<h1>"+marker.artist.artist+"</h1>");
-		    event.stop();
-		});
-	    }
 	    for (var i = 0; i < artists.length; i++) {
-		console.log(artists[i].artist + " " + artists[i].lat + " " + artists[i].lon);
+		console.log(artists[i].name + " " + artists[i].lat + " " + artists[i].lon);
 		var marker = new google.maps.Marker({
 		    position:(new google.maps.LatLng(artists[i].lat,
 						     artists[i].lon)),
-		    title:artists[i].artist,
+		    title:artists[i].name,
 		    clickable:true,
 		    map:map
 		});
 		marker.artist = artists[i];
-		attachto(marker);
+		google.maps.event.addListener(marker, 'click', function(event){
+		    var info = "<h1>"+this.artist.name+" (" + 
+			this.artist.artist_location.location + ")</h1>";
+		    info += "<ul>"
+		    for (var i = 0; i < this.artist.songs.length; i++)
+			info += "<li>" + this.artist.songs[i].title + "</li>";
+		    info += "</ul>";
+		    $("#songs").html(info);
+		    event.stop();
+		});
 	    }
-	    //var songs = create_songs(artists);
-	    //console.log(songs);
-	    //MusicMap.getMap(artists);
 	});
     });
 });
 
-
-
-
-function MusicMap(lat, lon) {
-    this.latitude = lat;
-    this.longitude = lon;
-    this.carto_api = '72b847076e2f6312f9116a24bea7a27d448c7f7e';
-}
-
+MusicMap = {};
 MusicMap.extractLocation = function(input, callback) {
     var regex = new RegExp("[-+]?[0-9]*\.?[0-9]+,[-+]?[0-9]*\.?[0-9]+");
     var parsed_input = input.match(regex);
@@ -80,59 +70,4 @@ MusicMap.extractLocation = function(input, callback) {
 		     results[0].geometry.location.lng());
 	});
     }
-}
-
-MusicMap.getMap = function (addresses)
-{
-    var map, map_carto_layer,
-    url = 'http://musicmaps.cartodb.com/api/v2/sql';
-
-    $.each(addresses,
-	   function (index, item)
-	   {
-	       var sql = 'INSERT INTO nearby_artists(artist, familiarity, lat, lon) VALUES (';
-	       sql += "'" + item.artist + "',";
-	       sql += item.familiarity + ',';
-	       sql += item.lat + ',';
-	       sql += item.lon;
-	       sql += ')';
-
-	       console.log(sql);
-
-	       $.ajax(
-		   {
-		       'data': {
-			   'q': sql,
-			   'api_key': (new MusicMap).carto_api
-		       },
-		       'type': 'get',
-		       'url': encodeURI(url),
-
-		       success: function (resp, success, xhr)
-		       {
-			   if (addresses.length - 1 === index)
-			   {
-			       map = new google.maps.Map($('#map')[0],
-							 {
-							     center: new google.maps.LatLng(this.latitude, this.longitude),
-							     zoom: 8,
-							     mapTypeId: google.maps.MapTypeId.ROADMAP
-							 }
-							);
-
-			       map_carto_layer = new google.maps.CartoDBLayer(
-				   {
-				       map_canvas: 'map',
-				       map: map,
-				       username: 'musicmaps',
-				       password: 'tcnjrulez',
-				       query: 'SELECT * FROM nearby_artists'
-				   }
-			       );
-			   }
-		       }
-		   }
-	       );
-	   }
-	  );
 };
