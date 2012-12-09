@@ -18,6 +18,10 @@ body {
     vertical-align:middle;
     display:table-cell;
 }
+#notif {
+    margin-top:1ex;
+    font-size:50%;
+}
 #map {
     display:table-cell;
     width:50%;

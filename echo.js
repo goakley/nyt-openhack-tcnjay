@@ -3,7 +3,7 @@ var EchoServer = new function() {
     var geocoder = new google.maps.Geocoder();
     this.obtainArtists = function(latitude, longitude, callback) {
 	// Build the location query URL
-	var range = 10;
+	var range = 1;
 	var max_lat = latitude + range;
 	var min_lat = latitude - range;
 	var max_long = longitude + range;
@@ -24,9 +24,14 @@ var EchoServer = new function() {
 		};
 		var url = "http://developer.echonest.com/api/v4/artist/profile"
 		    + "?api_key=" + api_key + "&format=json&name=" + 
-		    uniqueArtists[index].name + "&bucket=artist_location";
-		$.getJSON(url, function(data) {
+		    uniqueArtists[index].artist + "&bucket=artist_location" + 
+		    "&bucket=familiarity&bucket=hotttnesss";
+		$.getJSON(encodeURI(url), function(data) {
 		    var address=data.response.artist.artist_location.location;
+		    uniqueArtists[index].familiarity = 
+			data.response.artist.familiarity
+		    uniqueArtists[index].hotttnesss = 
+			data.response.artist.hotttnesss
 		    geocoder.geocode({'address': address}, function (results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
 			    uniqueArtists[index].lat = results[0].geometry.location.lat();

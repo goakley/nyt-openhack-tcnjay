@@ -14,15 +14,33 @@ var map = new google.maps.Map(document.getElementById('map'),
 			       mapTypeId:google.maps.MapTypeId.HYBRID});
 
 $("#form_location").submit(function(event) {
+    $("#form_location").children('input[type=submit]').attr('disabled',
+							    'disabled');
     var input = $("#form_location_text").val();
     $("#form_location_text").val("");
     event.preventDefault();
+    $("#notif").text("Please Wait...");
     MusicMap.extractLocation(input, function(lat, lon) {
-	//(new EchoServer(lat, lon)).obtainArtists(function(artists) {
+	var latlon = new google.maps.LatLng(lat,lon);
+	var circle = new google.maps.Circle({center:latlon,
+					     fillColor:'red', fillOpacity:0.1,
+					     strokeWeight:1,
+					     radius:111120,
+					     map:map});
+	map.setCenter(latlon);
+	map.setZoom(8);
 	EchoServer.obtainArtists(lat, lon, function(artists) {
+	    $("#notif").html("&nbsp");
+	    $("#songs").text(artists);
 	    console.log(artists);
 	    for (var i = 0; i < artists.length; i++) {
-		artists[i]['familiarity'] = 32;
+		console.log(artists[i].artist + " " + artists[i].lat + " " + artists[i].lon);
+		new google.maps.Marker({
+		    position:(new google.maps.LatLng(artists[i].lat,
+						     artists[i].lon)),
+		    clickable:false,
+		    map:map
+		});
 	    }
 	    //var songs = create_songs(artists);
 	    //console.log(songs);
