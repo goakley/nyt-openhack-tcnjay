@@ -15,11 +15,11 @@ $("#form_location").submit(function(event) {
     event.preventDefault();
     MusicMap.extractLocation(input, function(lat, lon) {
 	(new EchoServer(lat, lon)).obtainArtists(function(artists) {
-	//obtainArtists(lat, lon, function(artists){
 	    for (var i = 0; i < artists.length; i++) {
 		artists[i]['familiarity'] = 32;
 	    }
-	    console.log(artists);
+	    var songs = create_songs(artists);
+	    console.log(songs);
 	});
     });
 });
