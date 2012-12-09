@@ -31,16 +31,25 @@ $("#form_location").submit(function(event) {
 	map.setZoom(8);
 	EchoServer.obtainArtists(lat, lon, function(artists) {
 	    $("#notif").html("&nbsp");
-	    $("#songs").text(artists);
 	    console.log(artists);
+	    function attachto(marker) {
+		google.maps.event.addListener(marker, 'click', function(event){
+		    console.log("CLICKED");
+		    $("#songs").html("<h1>"+marker.artist.artist+"</h1>");
+		    event.stop();
+		});
+	    }
 	    for (var i = 0; i < artists.length; i++) {
 		console.log(artists[i].artist + " " + artists[i].lat + " " + artists[i].lon);
-		new google.maps.Marker({
+		var marker = new google.maps.Marker({
 		    position:(new google.maps.LatLng(artists[i].lat,
 						     artists[i].lon)),
-		    clickable:false,
+		    title:artists[i].artist,
+		    clickable:true,
 		    map:map
 		});
+		marker.artist = artists[i];
+		attachto(marker);
 	    }
 	    //var songs = create_songs(artists);
 	    //console.log(songs);
