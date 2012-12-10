@@ -1,20 +1,24 @@
 {
-    "BundleType": "Application",
-    "BundleIdentifier": "nytimes",
-    "AppIcon": {
-        "36x18": "tutorial.png"
-    },
     "AppName": {
         "en": "MusicMaps"
     },
+    "AppDescription": {
+	"en": "Find music local to you!"
+    },
+    "AppIcon": {
+        "36x18": "tutorial.png"
+    },
+    "BundleType": "Application",
+    "BundleIdentifier": "nytimes",
+    "RequiredPermissions": [
+	"https://maps.googleapis.com/",
+	"http://maps.googleapis.com/",
+	"https://maps.google.com/",
+	"http://maps.google.com/",
+	"http://developer.echonest.com"
+    ],
     "SupportedLanguages": [
         "en"
     ],
-    "RequiredPermissions": [
-    "https://maps.googleapis.com/",
-	"http://maps.googleapis.com/",
-    "https://maps.google.com/",
-	"http://maps.google.com/",
-	"http://developer.echonest.com"
-    ]
+    "VendorIdentifier": "com"
 }
