@@ -13,8 +13,8 @@
     "RequiredPermissions": [
 	"https://maps.googleapis.com/",
 	"http://maps.googleapis.com/",
-	"https://maps.google.com/",
-	"http://maps.google.com/",
+	"http://maps.gstatic.com/",
+	"http://*.google.com/",
 	"http://developer.echonest.com"
     ],
     "SupportedLanguages": [
