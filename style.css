@@ -22,10 +22,14 @@ body {
     margin-top:1ex;
     font-size:50%;
 }
-#map {
+#mapdiv {
     display:table-cell;
     width:50%;
     height:40ex;
+}
+#map {
+    width:100%;
+    height:100%;
 }
 #songs {
     width:80%;

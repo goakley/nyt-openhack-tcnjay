@@ -12,6 +12,7 @@ var map = new google.maps.Map(document.getElementById('map'),
 			      {center:(new google.maps.LatLng(0,0)),
 			       zoom:3,
 			       mapTypeId:google.maps.MapTypeId.HYBRID});
+google.maps.event.trigger(map, 'resize', function(){});
 
 $("#form_location").submit(function(event) {
     $("#form_location").children('input[type=submit]').attr('disabled',
@@ -52,6 +53,7 @@ $("#form_location").submit(function(event) {
 		    event.stop();
 		});
 	    }
+	    $("#form_location").children('input[type=submit]').removeAttr('disabled');
 	});
     });
 });
