@@ -40,14 +40,7 @@ $("#form_location").submit(function(event){
 		color + '|000000|ffff00';
 		}*/
 	oms.addListener('click', function(marker) {
-		    var info = "<h1>"+this.artist.name+" (" + 
-			this.artist.artist_location.location + ")</h1>";
-		    info += "<ul>"
-		    for (var i = 0; i < this.artist.songs.length; i++)
-			info += "<li>" + this.artist.songs[i].title + "</li>";
-		    info += "</ul>";
-		    $("#songs").html(info);
-		    event.stop();
+		    
 	});
 	EchoServer.obtainArtists(lat, lon, function(artists) {
 	    $("#notif").html("&nbsp");
@@ -64,12 +57,13 @@ $("#form_location").submit(function(event){
 		oms.addMarker(marker);
 		oms.addListener('spiderfy', function(markers) {
 
-		});
-		oms.addListener('unspiderfy', function(markers) {
 
 		});
+	/*	oms.addListener('unspiderfy', function(markers) {
+
+		});*/
 		
-		/*google.maps.event.addListener(marker, 'click', function(event){
+		google.maps.event.addListener(marker, 'click', function(event){
 		  var info = "<h1>"+this.artist.name+" (" + 
 		  this.artist.artist_location.location + ")</h1>";
 		  info += "<ul>"
@@ -78,7 +72,7 @@ $("#form_location").submit(function(event){
 		  info += "</ul>";
 		  $("#songs").html(info);
 		  event.stop();
-		  });*/
+		  });
 	    }
 	    $("#form_location").children('input[type=submit]').removeAttr('disabled');
 	});
