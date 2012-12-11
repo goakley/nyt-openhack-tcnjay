@@ -14,7 +14,7 @@ var map = new google.maps.Map(document.getElementById('map'),
 			       mapTypeId:google.maps.MapTypeId.HYBRID});
 google.maps.event.trigger(map, 'resize', function(){});
 
-var oms = new OverlappingMarkerSpiderfier(map);
+var oms = new OverlappingMarkerSpiderfier(map, {keepSpiderfied: true});
 
 $("#form_location").submit(function(event){
     $("#form_location").children('input[type=submit]').attr('disabled',
